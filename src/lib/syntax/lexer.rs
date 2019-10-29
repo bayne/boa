@@ -587,10 +587,10 @@ impl<'a> Lexer<'a> {
                 '\u{0020}' | '\u{0009}' | '\u{000B}' | '\u{000C}' | '\u{00A0}' | '\u{FEFF}' |
                 // Unicode Space_Seperator category (minus \u{0020} and \u{00A0} which are allready stated above)
                 '\u{1680}' | '\u{2000}'..='\u{200A}' | '\u{202F}' | '\u{205F}' | '\u{3000}' => (),
-                _ => panic!(
-                    "{}:{}: Unexpected '{}'",
-                    self.line_number, self.column_number, ch
-                ),
+                _ => {
+                    let msg = format!("{}:{}: Unexpected '{}'", self.line_number, self.column_number, ch);
+                    return Err(LexerError::new(msg.as_str()));
+                },
             }
         }
     }
